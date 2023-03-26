@@ -27,3 +27,34 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     restart: on-failure
+
+  ewm-service:
+    image: explore-with-me-ewm
+    build:
+      context: main/.
+      dockerfile: Dockerfile
+    container_name: explore-with-me-ewm
+    depends_on:
+      - stats-server
+    ports:
+      - "8080:8080"
+    environment:
+      - STATS_SERVER_URL=http://stats-service:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/postgres
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: on-failure
+
+  ewm-db:
+    image: postgres:14-alpine
+    container_name: db-postgres-ewm
+    volumes:
+      - /var/lib/postgresql/data/
+    ports:
+      - "6543:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: on-failure
