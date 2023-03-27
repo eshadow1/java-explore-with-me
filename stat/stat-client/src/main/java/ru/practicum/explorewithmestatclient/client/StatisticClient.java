@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import ru.practicum.explorewithmestatclient.model.InfoToGetStatistic;
 import ru.practicum.explorewithmestatdto.EndpointHitDto;
 import ru.practicum.explorewithmestatdto.utils.ParamRest;
 
-import java.util.List;
+import javax.validation.Valid;
 import java.util.Map;
-
 
 @Service
 public class StatisticClient extends BaseClient {
@@ -31,21 +31,21 @@ public class StatisticClient extends BaseClient {
         return post(ParamRest.HITS_CONTROLLER, endpointHitDto);
     }
 
-    public ResponseEntity<Object> getStats(String start, String end, List<String> uris, Boolean unique) {
-        if (unique != null) {
+    public ResponseEntity<Object> getStats(@Valid InfoToGetStatistic infoToGetStatistic) {
+        if (infoToGetStatistic.getUnique() != null) {
             Map<String, Object> parameters = Map.of(
-                    "start", start,
-                    "end", end,
-                    "uris", uris,
-                    "unique", unique
+                    "start", infoToGetStatistic.getStart(),
+                    "end", infoToGetStatistic.getEnd(),
+                    "uris", infoToGetStatistic.getUris(),
+                    "unique", infoToGetStatistic.getUnique()
             );
 
             return get(ParamRest.STATS_CONTROLLER + "?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
         } else {
             Map<String, Object> parameters = Map.of(
-                    "start", start,
-                    "end", end,
-                    "uris", uris
+                    "start", infoToGetStatistic.getStart(),
+                    "end", infoToGetStatistic.getEnd(),
+                    "uris", infoToGetStatistic.getUris()
             );
 
             return get(ParamRest.STATS_CONTROLLER + "?start={start}&end={end}&uris={uris}", parameters);
