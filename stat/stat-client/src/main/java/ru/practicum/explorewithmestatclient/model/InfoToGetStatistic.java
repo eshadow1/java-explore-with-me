@@ -14,16 +14,16 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class InfoToGetStatistic {
     @NotNull
-    String start;
+    private String start;
 
     @NotNull
-    String end;
+    private String end;
 
-    List<String> uris;
+    private List<String> uris;
 
-    Boolean unique;
+    private Boolean unique;
 
-    Long limit;
+    private Long limit;
 
-    String application;
+    private String application;
 }
