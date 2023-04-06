@@ -11,6 +11,7 @@
 
     <name>Explore With Me Statistic DTO</name>
 
+    <groupId>ru.practicum</groupId>
     <artifactId>explore-with-me-stat-dto</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
