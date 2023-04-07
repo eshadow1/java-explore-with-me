@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,10 +46,6 @@ public class StatisticController {
                                        @RequestParam(required = false) List<String> uris,
                                        @RequestParam(defaultValue = "false") boolean unique) {
         log.info("Получен запрос на получение статистики c " + start + " до " + end);
-
-        if(uris == null) {
-            uris = Collections.emptyList();
-        }
 
         return endpointHitService.getHits(LocalDateTime.parse(start, DATETIME_FORMATTER),
                         LocalDateTime.parse(end, DATETIME_FORMATTER),
