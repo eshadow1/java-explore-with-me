@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/events")
 public class EventController {
     private final EventService eventService;
-
     @Value("${spring.application.name}")
     private String appName;
 
@@ -81,8 +80,8 @@ public class EventController {
         try {
             statisticClient.addHits(endpointHitDto);
         } catch (RuntimeException error) {
-        }
 
+        }
         return EventMapper.toEventFullDto(event);
     }
 }
