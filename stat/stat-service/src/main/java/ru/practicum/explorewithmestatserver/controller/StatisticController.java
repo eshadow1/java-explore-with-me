@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,13 +44,17 @@ public class StatisticController {
     @GetMapping(ParamRest.STATS_CONTROLLER)
     public List<ViewStatsDto> getStats(@RequestParam @NotNull String start,
                                        @RequestParam @NotNull String end,
-                                       @RequestParam String[] uris,
+                                       @RequestParam(required = false) List<String> uris,
                                        @RequestParam(defaultValue = "false") boolean unique) {
         log.info("Получен запрос на получение статистики c " + start + " до " + end);
 
+        if(uris == null) {
+            uris = Collections.emptyList();
+        }
+
         return endpointHitService.getHits(LocalDateTime.parse(start, DATETIME_FORMATTER),
                         LocalDateTime.parse(end, DATETIME_FORMATTER),
-                        Arrays.asList(uris), unique)
+                        uris, unique)
                 .stream()
                 .map(ViewStatsMapper::toViewStatsDto)
                 .collect(Collectors.toList());
