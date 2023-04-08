@@ -35,14 +35,25 @@ public class EventServiceImpl implements EventService {
                                     SortType sort,
                                     Integer from,
                                     Integer size) {
-        FromPageRequest pageable;
-        if (SortType.EVENT_DATE.equals(sort)) {
-            pageable =  new FromPageRequest(from, size, Sort.by(Sort.Direction.DESC, "eventDate"));
-        } else if(SortType.VIEWS.equals(sort)) {
-            pageable =  new FromPageRequest(from, size, Sort.by(Sort.Direction.DESC, "views"));
-        } else {
-            pageable = new FromPageRequest(from, size, Sort.unsorted());
+        if (sort == null) {
+            sort = SortType.DEFAULT;
         }
+
+        Sort sortType;
+
+        switch (sort) {
+            case EVENT_DATE:
+                sortType = Sort.by(Sort.Direction.DESC, "eventDate");
+                break;
+            case VIEWS:
+                sortType = Sort.by(Sort.Direction.DESC, "views");
+                break;
+            default:
+                sortType = Sort.unsorted();
+                break;
+        }
+
+        FromPageRequest pageable = new FromPageRequest(from, size, sortType);
 
         QEvent qEvent = QEvent.event;
         BooleanExpression expression = qEvent.state.eq(State.PUBLISHED);
