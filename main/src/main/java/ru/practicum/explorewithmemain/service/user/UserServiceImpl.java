@@ -301,8 +301,7 @@ public class UserServiceImpl implements UserService {
         return requestRepository.save(request);
     }
 
-    private Long getCountUser(Event event)
-    {
+    private Long getCountUser(Event event) {
         return event.getRequests() != null
                 ? event.getRequests().stream()
                 .filter(req -> Status.CONFIRMED.equals(req.getStatus()))

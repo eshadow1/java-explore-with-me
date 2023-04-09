@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import ru.practicum.explorewithmemain.models.category.dto.CategoryDto;
 import ru.practicum.explorewithmemain.models.request.Request;
 import ru.practicum.explorewithmemain.models.user.dto.UserShortDto;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class EventShortDto {
 
     private List<Request> confirmedRequests;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE)
     private LocalDateTime eventDate;
 
     private UserShortDto userShortDto;

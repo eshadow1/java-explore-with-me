@@ -13,5 +13,6 @@ import java.util.List;
 @Builder(toBuilder = true)
 public class EventRequestStatusUpdateRequest {
     private List<Long> requestIds;
+
     private Status status;
 }

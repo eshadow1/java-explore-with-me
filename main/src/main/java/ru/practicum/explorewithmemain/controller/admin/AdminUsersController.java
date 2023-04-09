@@ -26,19 +26,18 @@ public class AdminUsersController {
     }
 
     @GetMapping
-    public List<UserDto> getUsers(@RequestParam(required = false)  List<Long> ids,
+    public List<UserDto> getUsers(@RequestParam(required = false) List<Long> ids,
                                   @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                   @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
         return adminService.getUsers(ids, from, size).stream()
-        .map(UserMapper::toUserDto)
-        .collect(Collectors.toList());
+                .map(UserMapper::toUserDto)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto postUser(@RequestBody @Valid UserDto userDto) {
-        return UserMapper.toUserDto(adminService.addUser(UserMapper.fromUserDto(userDto, (long)0)));
+        return UserMapper.toUserDto(adminService.addUser(UserMapper.fromUserDto(userDto, (long) 0)));
     }
 
     @DeleteMapping({"/{userId}"})

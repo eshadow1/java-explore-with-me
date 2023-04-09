@@ -29,7 +29,6 @@ public class UserEventsController {
     public List<EventFullDto> getUserEvents(@PathVariable Long userId,
                                             @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                             @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
         return userService.getEvents(userId, from, size).stream()
                 .map(EventMapper::toEventFullDto)
                 .collect(Collectors.toList());
@@ -38,7 +37,6 @@ public class UserEventsController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EventFullDto postUserEvents(@PathVariable Long userId, @RequestBody @Valid NewEventDto newEventDto) {
-
         return EventMapper.toEventFullDto(userService.addEvent(userId, newEventDto));
     }
 

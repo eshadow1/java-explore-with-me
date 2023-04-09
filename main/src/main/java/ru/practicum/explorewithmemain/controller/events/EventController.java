@@ -59,7 +59,7 @@ public class EventController {
         try {
             statisticClient.addHits(endpointHitDto);
         } catch (RuntimeException error) {
-
+            log.warn("При запросе всех событий статистика могла не отправиться");
         }
         return events.stream()
                 .map(EventMapper::toEventFullDto)
@@ -80,7 +80,7 @@ public class EventController {
         try {
             statisticClient.addHits(endpointHitDto);
         } catch (RuntimeException error) {
-
+            log.warn("При запросе события " + id + " статистика могла не отправиться");
         }
         return EventMapper.toEventFullDto(event);
     }

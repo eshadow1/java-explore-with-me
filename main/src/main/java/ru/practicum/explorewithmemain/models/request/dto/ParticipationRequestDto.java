@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithmemain.models.request.Status;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 public class ParticipationRequestDto {
     private Long id;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstParameters.DATETIME_FORMATTER_WITH_MILLISECONDS)
     private LocalDateTime created;
 
     private Long event;

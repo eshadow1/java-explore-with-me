@@ -28,5 +28,6 @@ public class CompilationMapper {
                 .build();
     }
 
-    private CompilationMapper() {}
+    private CompilationMapper() {
+    }
 }

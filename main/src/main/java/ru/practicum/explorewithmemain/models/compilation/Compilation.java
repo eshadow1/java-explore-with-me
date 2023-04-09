@@ -33,5 +33,5 @@ public class Compilation {
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(name = "compilation_events", joinColumns = {@JoinColumn(name = "compilation_id")},
             inverseJoinColumns = @JoinColumn(name = "event_id"))
-    Set<Event> events;
+    private Set<Event> events;
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithmemain.models.events.Location;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,7 @@ public class NewEventDto {
     @NotBlank
     private String description;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd' 'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE)
     private LocalDateTime eventDate;
 
     @NotNull

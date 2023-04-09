@@ -22,7 +22,7 @@ public class AdminCategoriesController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto postCategory(@RequestBody @Valid CategoryDto categoryDto) {
-        return CategoryMapper.toCategoryDto(adminService.addCategory(CategoryMapper.fromCategoryDto(categoryDto, (long)0)));
+        return CategoryMapper.toCategoryDto(adminService.addCategory(CategoryMapper.fromCategoryDto(categoryDto, 0L)));
     }
 
     @DeleteMapping("/{catId}")

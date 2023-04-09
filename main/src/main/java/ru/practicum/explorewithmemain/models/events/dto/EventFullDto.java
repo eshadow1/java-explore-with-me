@@ -10,6 +10,7 @@ import ru.practicum.explorewithmemain.models.events.Location;
 import ru.practicum.explorewithmemain.models.events.State;
 import ru.practicum.explorewithmemain.models.request.Request;
 import ru.practicum.explorewithmemain.models.user.dto.UserShortDto;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
@@ -30,10 +31,10 @@ public class EventFullDto {
 
     private List<Request> confirmedRequests;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE)
     private LocalDateTime createdOn;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE)
     private LocalDateTime eventDate;
 
     @Size(max = 1000, message = "Description cannot be longer than 1000 characters.")
@@ -48,7 +49,7 @@ public class EventFullDto {
     @PositiveOrZero
     private Long participantLimit;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE)
     private LocalDateTime publishedOn;
 
     private Boolean requestModeration;

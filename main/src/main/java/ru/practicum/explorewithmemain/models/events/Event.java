@@ -9,6 +9,7 @@ import org.hibernate.annotations.FetchMode;
 import ru.practicum.explorewithmemain.models.category.Category;
 import ru.practicum.explorewithmemain.models.request.Request;
 import ru.practicum.explorewithmemain.models.user.User;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,14 +42,14 @@ public class Event {
     List<Request> requests;
 
     @Column(name = "created_on")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstParameters.DATETIME_FORMATTER)
     private LocalDateTime createdOn;
 
     @Column(name = "description", length = 1000)
     private String description;
 
     @Column(name = "event_date")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstParameters.DATETIME_FORMATTER)
     private LocalDateTime eventDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.MERGE)
@@ -66,7 +67,7 @@ public class Event {
     private Long participantLimit;
 
     @Column(name = "published_on")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstParameters.DATETIME_FORMATTER)
     private LocalDateTime publishedOn;
 
     @Column(name = "request_moderation")

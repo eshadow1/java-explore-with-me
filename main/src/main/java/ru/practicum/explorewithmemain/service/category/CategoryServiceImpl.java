@@ -12,12 +12,13 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Override
     public List<Category> getAll(Integer from, Integer size) {
         var pageRequest = new FromPageRequest(from, size, Sort.by(Sort.Direction.DESC, "id"));

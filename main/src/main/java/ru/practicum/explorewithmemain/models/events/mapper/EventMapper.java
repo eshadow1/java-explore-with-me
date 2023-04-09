@@ -7,7 +7,6 @@ import ru.practicum.explorewithmemain.models.events.dto.EventShortDto;
 import ru.practicum.explorewithmemain.models.user.mapper.UserMapper;
 
 public class EventMapper {
-
     public static EventFullDto toEventFullDto(Event event) {
         return EventFullDto.builder()
                 .id(event.getId())
@@ -29,8 +28,6 @@ public class EventMapper {
                 .build();
     }
 
-    private EventMapper() {}
-
     public static EventShortDto toEventShortDto(Event event) {
         return EventShortDto.builder()
                 .id(event.getId())
@@ -44,4 +41,6 @@ public class EventMapper {
                 .views(event.getViews())
                 .build();
     }
+
+    private EventMapper() {}
 }

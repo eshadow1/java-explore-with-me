@@ -21,7 +21,6 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-
     @GetMapping
     public List<CategoryDto> getCategories(@PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                            @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {

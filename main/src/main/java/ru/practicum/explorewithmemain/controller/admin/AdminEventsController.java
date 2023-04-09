@@ -8,6 +8,7 @@ import ru.practicum.explorewithmemain.models.events.dto.EventFullDto;
 import ru.practicum.explorewithmemain.models.events.dto.UpdateEventAdminRequestDto;
 import ru.practicum.explorewithmemain.models.events.mapper.EventMapper;
 import ru.practicum.explorewithmemain.service.admin.AdminService;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 public class AdminEventsController {
     private final AdminService adminService;
 
-
     public AdminEventsController(AdminService adminService) {
         this.adminService = adminService;
 
@@ -31,8 +31,8 @@ public class AdminEventsController {
     public List<EventFullDto> getEvents(@RequestParam(required = false, name = "users") List<Long> users,
                                         @RequestParam(required = false, name = "states") List<State> states,
                                         @RequestParam(required = false, name = "categories") List<Long> categories,
-                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")  @RequestParam(required = false, name = "rangeStart") LocalDateTime rangeStart,
-                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")  @RequestParam(required = false, name = "rangeEnd") LocalDateTime rangeEnd,
+                                        @DateTimeFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE) @RequestParam(required = false, name = "rangeStart") LocalDateTime rangeStart,
+                                        @DateTimeFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE) @RequestParam(required = false, name = "rangeEnd") LocalDateTime rangeEnd,
                                         @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                         @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
 

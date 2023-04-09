@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithmemain.models.events.Location;
+import ru.practicum.explorewithmemain.utils.ConstParameters;
 import ru.practicum.explorewithmemain.utils.StateAction;
 
 import javax.validation.constraints.PositiveOrZero;
@@ -18,27 +19,27 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public class UpdateEventAdminRequestDto {
     @Size(max = 1000, message = "Annotation cannot be longer than 1000 characters.")
-    String annotation;
+    private String annotation;
 
-    Long category;
+    private Long category;
 
     @Size(max = 1000, message = "Description cannot be longer than 1000 characters.")
-    String description;
+    private String description;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate;
+    @JsonFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE)
+    private LocalDateTime eventDate;
 
-    Location location;
+    private Location location;
 
-    Boolean paid;
+    private Boolean paid;
 
     @PositiveOrZero
-    Long participantLimit;
+    private Long participantLimit;
 
-    Boolean requestModeration;
+    private Boolean requestModeration;
 
     @Size(max = 1000, message = "Title cannot be longer than 1000 characters.")
-    String title;
+    private String title;
 
-    StateAction stateAction;
+    private StateAction stateAction;
 }

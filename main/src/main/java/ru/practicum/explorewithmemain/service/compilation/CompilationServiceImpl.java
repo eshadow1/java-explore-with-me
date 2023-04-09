@@ -21,7 +21,7 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public List<Compilation> getAll(Boolean pinned, Integer from, Integer size) {
-        var pageRequest = pinned ==null
+        var pageRequest = pinned == null
                 ? new FromPageRequest(from, size, Sort.unsorted())
                 : new FromPageRequest(from, size, Sort.by(Sort.Direction.DESC, "id"));
 
@@ -31,6 +31,6 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public Compilation getCompilationById(Long compId) {
         return compilationRepository.findById(compId).orElseThrow(() ->
-                new NotFoundException(String.format("Set with id " + compId +" not found")));
+                new NotFoundException(String.format("Set with id " + compId + " not found")));
     }
 }
