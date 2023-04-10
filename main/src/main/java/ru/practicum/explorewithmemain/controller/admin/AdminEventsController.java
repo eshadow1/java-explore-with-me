@@ -9,6 +9,7 @@ import ru.practicum.explorewithmemain.models.events.dto.UpdateEventAdminRequestD
 import ru.practicum.explorewithmemain.models.events.mapper.EventMapper;
 import ru.practicum.explorewithmemain.service.admin.AdminService;
 import ru.practicum.explorewithmemain.utils.ConstParameters;
+import ru.practicum.explorewithmemain.utils.model.SearchAdminParameters;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -35,8 +36,14 @@ public class AdminEventsController {
                                         @DateTimeFormat(pattern = ConstParameters.DATETIME_FORMATTER_WITH_SPACE) @RequestParam(required = false, name = "rangeEnd") LocalDateTime rangeEnd,
                                         @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                         @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
-
-        return adminService.getEvents(users, states, categories, rangeStart, rangeEnd, from, size).stream()
+        var searchAdminParameters = SearchAdminParameters.builder()
+                .users(users)
+                .states(states)
+                .categories(categories)
+                .rangeStart(rangeStart)
+                .rangeEnd(rangeEnd)
+                .build();
+        return adminService.getEvents(searchAdminParameters, from, size).stream()
                 .map(EventMapper::toEventFullDto)
                 .collect(Collectors.toList());
     }

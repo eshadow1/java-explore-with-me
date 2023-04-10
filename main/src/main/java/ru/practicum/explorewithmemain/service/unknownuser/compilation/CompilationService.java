@@ -1,4 +1,4 @@
-package ru.practicum.explorewithmemain.service.compilation;
+package ru.practicum.explorewithmemain.service.unknownuser.compilation;
 
 import ru.practicum.explorewithmemain.models.compilation.Compilation;
 

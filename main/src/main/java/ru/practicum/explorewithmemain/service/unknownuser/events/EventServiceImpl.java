@@ -1,4 +1,4 @@
-package ru.practicum.explorewithmemain.service.events;
+package ru.practicum.explorewithmemain.service.unknownuser.events;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Sort;
@@ -11,8 +11,8 @@ import ru.practicum.explorewithmemain.utils.SortType;
 import ru.practicum.explorewithmemain.utils.database.FromPageRequest;
 import ru.practicum.explorewithmemain.utils.exception.NotFoundException;
 import ru.practicum.explorewithmemain.models.events.QEvent;
+import ru.practicum.explorewithmemain.utils.model.SearchParameters;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,22 +26,16 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAllEvents(String text,
-                                    List<Long> categories,
-                                    Boolean paid,
-                                    LocalDateTime rangeStart,
-                                    LocalDateTime rangeEnd,
-                                    Boolean onlyAvailable,
-                                    SortType sort,
+    public List<Event> getAllEvents(SearchParameters searchParameters,
                                     Integer from,
                                     Integer size) {
-        if (sort == null) {
-            sort = SortType.DEFAULT;
+        if (searchParameters.getSort() == null) {
+            searchParameters.setSort(SortType.DEFAULT);
         }
 
         Sort sortType;
 
-        switch (sort) {
+        switch (searchParameters.getSort()) {
             case EVENT_DATE:
                 sortType = Sort.by(Sort.Direction.DESC, "eventDate");
                 break;
@@ -57,24 +51,24 @@ public class EventServiceImpl implements EventService {
 
         QEvent qEvent = QEvent.event;
         BooleanExpression expression = qEvent.state.eq(State.PUBLISHED);
-        if (text != null) {
-            expression = expression.and(qEvent.annotation.containsIgnoreCase(text).or(qEvent.description.containsIgnoreCase(text)));
+        if (searchParameters.getText() != null) {
+            expression = expression.and(qEvent.annotation.containsIgnoreCase(searchParameters.getText()).or(qEvent.description.containsIgnoreCase(searchParameters.getText())));
         }
 
-        if (paid != null) {
-            expression = expression.and(qEvent.paid.eq(paid));
+        if (searchParameters.getPaid() != null) {
+            expression = expression.and(qEvent.paid.eq(searchParameters.getPaid()));
         }
 
-        if (categories != null && categories.size() > 0) {
-            expression = expression.and(qEvent.category.id.in(categories));
+        if (searchParameters.getCategories() != null && searchParameters.getCategories().size() > 0) {
+            expression = expression.and(qEvent.category.id.in(searchParameters.getCategories()));
         }
 
-        if (rangeStart != null) {
-            expression = expression.and(qEvent.eventDate.goe(rangeStart));
+        if (searchParameters.getRangeStart() != null) {
+            expression = expression.and(qEvent.eventDate.goe(searchParameters.getRangeStart()));
         }
 
-        if (rangeEnd != null) {
-            expression = expression.and(qEvent.eventDate.loe(rangeEnd));
+        if (searchParameters.getRangeEnd() != null) {
+            expression = expression.and(qEvent.eventDate.loe(searchParameters.getRangeEnd()));
         }
 
         return eventRepository.findAll(expression, pageable).getContent();

@@ -1,4 +1,4 @@
-package ru.practicum.explorewithmemain.service.category;
+package ru.practicum.explorewithmemain.service.unknownuser.category;
 
 import ru.practicum.explorewithmemain.models.category.Category;
 

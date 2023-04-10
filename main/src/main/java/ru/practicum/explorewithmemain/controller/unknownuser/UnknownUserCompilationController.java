@@ -1,11 +1,11 @@
-package ru.practicum.explorewithmemain.controller.compilation;
+package ru.practicum.explorewithmemain.controller.unknownuser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithmemain.models.compilation.dto.CompilationDto;
 import ru.practicum.explorewithmemain.models.compilation.mapper.CompilationMapper;
-import ru.practicum.explorewithmemain.service.compilation.CompilationService;
+import ru.practicum.explorewithmemain.service.unknownuser.compilation.CompilationService;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/compilations")
 @Validated
-public class CompilationController {
+public class UnknownUserCompilationController {
     private final CompilationService compilationService;
 
-    public CompilationController(CompilationService compilationService) {
+    public UnknownUserCompilationController(CompilationService compilationService) {
         this.compilationService = compilationService;
     }
 

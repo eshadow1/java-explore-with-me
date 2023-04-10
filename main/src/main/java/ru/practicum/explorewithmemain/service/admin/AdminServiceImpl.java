@@ -21,6 +21,7 @@ import ru.practicum.explorewithmemain.utils.exception.NotFoundException;
 import ru.practicum.explorewithmemain.models.user.User;
 import ru.practicum.explorewithmemain.repository.user.UserRepository;
 import ru.practicum.explorewithmemain.utils.database.FromPageRequest;
+import ru.practicum.explorewithmemain.utils.model.SearchAdminParameters;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -92,11 +93,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<Event> getEvents(List<Long> users,
-                                 List<State> states,
-                                 List<Long> categories,
-                                 LocalDateTime rangeStart,
-                                 LocalDateTime rangeEnd,
+    public List<Event> getEvents(SearchAdminParameters searchAdminParameters,
                                  Integer from,
                                  Integer size) {
         var pageRequest = new FromPageRequest(from, size, Sort.by(Sort.Direction.DESC, "id"));
@@ -104,24 +101,24 @@ public class AdminServiceImpl implements AdminService {
         QEvent qEvent = QEvent.event;
         BooleanExpression expression = qEvent.id.isNotNull();
 
-        if (users != null && users.size() > 0) {
-            expression = expression.and(qEvent.initiator.id.in(users));
+        if (searchAdminParameters.getUsers() != null && searchAdminParameters.getUsers().size() > 0) {
+            expression = expression.and(qEvent.initiator.id.in(searchAdminParameters.getUsers()));
         }
 
-        if (states != null && states.size() > 0) {
-            expression = expression.and(qEvent.state.in(states));
+        if (searchAdminParameters.getStates() != null && searchAdminParameters.getStates().size() > 0) {
+            expression = expression.and(qEvent.state.in(searchAdminParameters.getStates()));
         }
 
-        if (categories != null && categories.size() > 0) {
-            expression = expression.and(qEvent.category.id.in(categories));
+        if (searchAdminParameters.getCategories() != null && searchAdminParameters.getCategories().size() > 0) {
+            expression = expression.and(qEvent.category.id.in(searchAdminParameters.getCategories()));
         }
 
-        if (rangeStart != null) {
-            expression = expression.and(qEvent.eventDate.goe(rangeStart));
+        if (searchAdminParameters.getRangeStart() != null) {
+            expression = expression.and(qEvent.eventDate.goe(searchAdminParameters.getRangeStart()));
         }
 
-        if (rangeEnd != null) {
-            expression = expression.and(qEvent.eventDate.loe(rangeEnd));
+        if (searchAdminParameters.getRangeEnd() != null) {
+            expression = expression.and(qEvent.eventDate.loe(searchAdminParameters.getRangeEnd()));
         }
 
         return eventRepository.findAll(expression, pageRequest).getContent();

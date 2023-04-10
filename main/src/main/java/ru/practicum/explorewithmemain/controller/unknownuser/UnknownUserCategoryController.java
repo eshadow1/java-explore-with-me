@@ -1,10 +1,10 @@
-package ru.practicum.explorewithmemain.controller.category;
+package ru.practicum.explorewithmemain.controller.unknownuser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithmemain.models.category.dto.CategoryDto;
 import ru.practicum.explorewithmemain.models.category.mapper.CategoryMapper;
-import ru.practicum.explorewithmemain.service.category.CategoryService;
+import ru.practicum.explorewithmemain.service.unknownuser.category.CategoryService;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/categories")
-public class CategoryController {
+public class UnknownUserCategoryController {
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryService categoryService) {
+    public UnknownUserCategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 

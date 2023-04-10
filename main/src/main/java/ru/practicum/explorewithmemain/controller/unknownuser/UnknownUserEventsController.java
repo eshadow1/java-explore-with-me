@@ -1,4 +1,4 @@
-package ru.practicum.explorewithmemain.controller.events;
+package ru.practicum.explorewithmemain.controller.unknownuser;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,8 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithmemain.models.events.dto.EventFullDto;
 import ru.practicum.explorewithmemain.models.events.mapper.EventMapper;
-import ru.practicum.explorewithmemain.service.events.EventService;
+import ru.practicum.explorewithmemain.service.unknownuser.events.EventService;
 import ru.practicum.explorewithmemain.utils.SortType;
+import ru.practicum.explorewithmemain.utils.model.SearchParameters;
 import ru.practicum.explorewithmestatclient.client.StatisticClient;
 import ru.practicum.explorewithmestatdto.EndpointHitDto;
 
@@ -22,15 +23,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/events")
-public class EventController {
+public class UnknownUserEventsController {
     private final EventService eventService;
     @Value("${spring.application.name}")
     private String appName;
 
     private final StatisticClient statisticClient;
 
-    public EventController(EventService eventService,
-                           StatisticClient statisticClient) {
+    public UnknownUserEventsController(EventService eventService,
+                                       StatisticClient statisticClient) {
         this.eventService = eventService;
         this.statisticClient = statisticClient;
 
@@ -47,8 +48,16 @@ public class EventController {
                                         @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                         @Positive @RequestParam(name = "size", defaultValue = "10") Integer size,
                                         HttpServletRequest httpRequest) {
-        var events = eventService.getAllEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort,
-                from, size);
+        var searchParameters = SearchParameters.builder()
+                .text(text)
+                .categories(categories)
+                .paid(paid)
+                .rangeStart(rangeStart)
+                .rangeEnd(rangeEnd)
+                .onlyAvailable(onlyAvailable)
+                .sort(sort)
+                .build();
+        var events = eventService.getAllEvents(searchParameters, from, size);
 
         var endpointHitDto = EndpointHitDto.builder()
                 .ip(httpRequest.getRemoteAddr())

@@ -1,4 +1,4 @@
-package ru.practicum.explorewithmemain.service.compilation;
+package ru.practicum.explorewithmemain.service.unknownuser.compilation;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

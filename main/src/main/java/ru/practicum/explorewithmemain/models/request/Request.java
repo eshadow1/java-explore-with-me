@@ -19,22 +19,22 @@ import java.time.LocalDateTime;
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @CreationTimestamp
     @Column(name = "created")
-    LocalDateTime created;
+    private LocalDateTime created;
 
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     @JsonBackReference
-    Event event;
+    private Event event;
 
     @JoinColumn(name = "requester_id", unique = true)
-    Long requesterId;
+    private Long requesterId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    Status status;
+    private Status status;
 
 }
