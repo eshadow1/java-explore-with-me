@@ -3,6 +3,7 @@ package ru.practicum.explorewithmemain.repository.events;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import ru.practicum.explorewithmemain.models.events.Event;
@@ -18,8 +19,8 @@ public interface EventRepository extends JpaRepository<Event, Long>, QuerydslPre
 
     @Query("SELECT COUNT(e.id) " +
             "FROM Event AS e " +
-            "WHERE e.category.id = ?1")
-    Long countByCategoryId(Long id);
+            "WHERE e.category.id = :categoryId")
+    Long countByCategoryId(@Param("categoryId") Long id);
 
     Optional<Event> findByIdAndState(Long id, State published);
 

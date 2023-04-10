@@ -9,7 +9,8 @@ import ru.practicum.explorewithmemain.models.events.Event;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
