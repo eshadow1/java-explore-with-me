@@ -28,7 +28,7 @@ public class Compilation {
     @Column(nullable = false)
     private String title;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinTable(name = "compilation_events", joinColumns = {@JoinColumn(name = "compilation_id")},
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     private Set<Event> events;
