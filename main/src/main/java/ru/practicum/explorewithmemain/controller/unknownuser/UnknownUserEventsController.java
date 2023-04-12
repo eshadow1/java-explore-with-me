@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithmemain.models.events.dto.EventFullDto;
 import ru.practicum.explorewithmemain.models.events.mapper.EventMapper;
-import ru.practicum.explorewithmemain.service.unknownuser.events.EventService;
+import ru.practicum.explorewithmemain.service.unknownuser.events.UnknownUserEventService;
 import ru.practicum.explorewithmemain.utils.SortType;
 import ru.practicum.explorewithmemain.utils.model.SearchParameters;
 import ru.practicum.explorewithmestatclient.client.StatisticClient;
@@ -24,15 +24,15 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/events")
 public class UnknownUserEventsController {
-    private final EventService eventService;
+    private final UnknownUserEventService unknownUserEventService;
     @Value("${spring.application.name}")
     private String appName;
 
     private final StatisticClient statisticClient;
 
-    public UnknownUserEventsController(EventService eventService,
+    public UnknownUserEventsController(UnknownUserEventService unknownUserEventService,
                                        StatisticClient statisticClient) {
-        this.eventService = eventService;
+        this.unknownUserEventService = unknownUserEventService;
         this.statisticClient = statisticClient;
 
     }
@@ -57,7 +57,7 @@ public class UnknownUserEventsController {
                 .onlyAvailable(onlyAvailable)
                 .sort(sort)
                 .build();
-        var events = eventService.getAllEvents(searchParameters, from, size);
+        var events = unknownUserEventService.getAllEvents(searchParameters, from, size);
 
         var endpointHitDto = EndpointHitDto.builder()
                 .ip(httpRequest.getRemoteAddr())
@@ -78,7 +78,7 @@ public class UnknownUserEventsController {
     @GetMapping("/{id}")
     public EventFullDto getEventById(@PathVariable Long id, HttpServletRequest httpRequest) {
 
-        var event = eventService.getEvent(id);
+        var event = unknownUserEventService.getEvent(id);
 
         var endpointHitDto = EndpointHitDto.builder()
                 .ip(httpRequest.getRemoteAddr())

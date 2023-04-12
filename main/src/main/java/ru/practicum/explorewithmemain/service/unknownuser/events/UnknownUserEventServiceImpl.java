@@ -17,11 +17,11 @@ import java.util.List;
 
 @Service
 @Transactional
-public class EventServiceImpl implements EventService {
+public class UnknownUserEventServiceImpl implements UnknownUserEventService {
 
     private final EventRepository eventRepository;
 
-    public EventServiceImpl(EventRepository eventRepository) {
+    public UnknownUserEventServiceImpl(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 

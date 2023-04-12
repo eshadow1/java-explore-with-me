@@ -4,7 +4,7 @@ import ru.practicum.explorewithmemain.models.category.Category;
 
 import java.util.List;
 
-public interface CategoryService {
+public interface UnknownUserCategoryService {
     List<Category> getAll(Integer from, Integer size);
 
     Category getCategoryId(Long catId);

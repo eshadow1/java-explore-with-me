@@ -12,10 +12,10 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CompilationServiceImpl implements CompilationService {
+public class UnknownUserCompilationServiceImpl implements UnknownUserCompilationService {
     private final CompilationRepository compilationRepository;
 
-    public CompilationServiceImpl(CompilationRepository compilationRepository) {
+    public UnknownUserCompilationServiceImpl(CompilationRepository compilationRepository) {
         this.compilationRepository = compilationRepository;
     }
 

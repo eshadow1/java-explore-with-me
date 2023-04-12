@@ -5,7 +5,7 @@ import ru.practicum.explorewithmemain.utils.model.SearchParameters;
 
 import java.util.List;
 
-public interface EventService {
+public interface UnknownUserEventService {
     List<Event> getAllEvents(SearchParameters searchParameters,
                              Integer from,
                              Integer size);
