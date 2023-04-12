@@ -33,7 +33,7 @@ public class Event {
     @Column(name = "annotation", length = 1000)
     private String annotation;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -53,11 +53,11 @@ public class Event {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstParameters.DATETIME_FORMATTER)
     private LocalDateTime eventDate;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User initiator;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 

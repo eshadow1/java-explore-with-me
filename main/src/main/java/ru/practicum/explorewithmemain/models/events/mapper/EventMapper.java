@@ -17,7 +17,7 @@ public class EventMapper {
                 .eventDate(event.getEventDate())
                 .description(event.getDescription())
                 .initiator(UserMapper.toUserShortDto(event.getInitiator()))
-                .location(event.getLocation())
+                .location(event.getLocation().toBuilder().build())
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .publishedOn(event.getPublishedOn())
