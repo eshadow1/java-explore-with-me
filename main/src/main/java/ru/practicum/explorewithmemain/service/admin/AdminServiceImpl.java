@@ -5,6 +5,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithmemain.models.category.Category;
+import ru.practicum.explorewithmemain.models.comment.Comment;
+import ru.practicum.explorewithmemain.models.comment.dto.NewCommentDto;
 import ru.practicum.explorewithmemain.models.compilation.Compilation;
 import ru.practicum.explorewithmemain.models.compilation.dto.NewCompilationDto;
 import ru.practicum.explorewithmemain.models.compilation.mapper.CompilationMapper;
@@ -13,6 +15,7 @@ import ru.practicum.explorewithmemain.models.events.QEvent;
 import ru.practicum.explorewithmemain.models.events.State;
 import ru.practicum.explorewithmemain.models.events.dto.UpdateEventAdminRequestDto;
 import ru.practicum.explorewithmemain.repository.category.CategoryRepository;
+import ru.practicum.explorewithmemain.repository.comment.CommentRepository;
 import ru.practicum.explorewithmemain.repository.compilation.CompilationRepository;
 import ru.practicum.explorewithmemain.repository.events.EventRepository;
 import ru.practicum.explorewithmemain.utils.StateAction;
@@ -35,15 +38,18 @@ public class AdminServiceImpl implements AdminService {
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
     private final CompilationRepository compilationRepository;
+    private final CommentRepository commentRepository;
 
     public AdminServiceImpl(UserRepository userRepository,
                             CategoryRepository categoryRepository,
                             EventRepository eventRepository,
-                            CompilationRepository compilationRepository) {
+                            CompilationRepository compilationRepository,
+                            CommentRepository commentRepository) {
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.eventRepository = eventRepository;
         this.compilationRepository = compilationRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -188,24 +194,6 @@ public class AdminServiceImpl implements AdminService {
         return newEvent;
     }
 
-    private void checkNameCategory(Category category) {
-        if (categoryRepository.findByName(category.getName()).isPresent()) {
-            throw new ConflictException("This name is already taken");
-        }
-    }
-
-    private void checkNameUser(User user) {
-        if (userRepository.findByName(user.getName()).isPresent()) {
-            throw new ConflictException("This name is already taken");
-        }
-    }
-
-    private void checkEventsByCategory(Category category) {
-        if (eventRepository.countByCategoryId(category.getId()) > 0) {
-            throw new ConflictException("This name is already taken");
-        }
-    }
-
     @Override
     public Compilation addCompilation(NewCompilationDto newCompilationDto) {
         Compilation compilation;
@@ -247,5 +235,51 @@ public class AdminServiceImpl implements AdminService {
         }
 
         return compilation;
+    }
+
+    @Override
+    public List<Comment> getComments(List<Long> commentsId, Integer from, Integer size) {
+        var pageRequest = new FromPageRequest(from, size, Sort.by(Sort.Direction.DESC, "id"));
+        var result = commentsId == null ? commentRepository.findAll(pageRequest) : commentRepository.findByIdIn(commentsId, pageRequest);
+        return result.getContent();
+    }
+
+    @Override
+    public Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() ->
+                new NotFoundException(String.format("Comment with id " + commentId + " not found")));
+    }
+
+    @Override
+    public Comment updateComment(Long commentId, NewCommentDto commentDto) {
+        var comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new NotFoundException(String.format("Comment with id " + commentId + " not found")));
+        comment.setText(commentDto.getText());
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public Comment deleteComment(Long commentId) {
+        var comment = commentRepository.findById(commentId).orElse(null);
+        commentRepository.deleteById(commentId);
+        return comment;
+    }
+
+    private void checkNameCategory(Category category) {
+        if (categoryRepository.findByName(category.getName()).isPresent()) {
+            throw new ConflictException("This name is already taken");
+        }
+    }
+
+    private void checkNameUser(User user) {
+        if (userRepository.findByName(user.getName()).isPresent()) {
+            throw new ConflictException("This name is already taken");
+        }
+    }
+
+    private void checkEventsByCategory(Category category) {
+        if (eventRepository.countByCategoryId(category.getId()) > 0) {
+            throw new ConflictException("This name is already taken");
+        }
     }
 }
