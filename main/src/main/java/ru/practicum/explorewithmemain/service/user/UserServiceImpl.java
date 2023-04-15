@@ -368,13 +368,13 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkEventComment(Comment comment, Long eventId) {
-        if (comment.getEvent().getId() != eventId) {
+        if (!comment.getEvent().getId().equals(eventId)) {
             throw new ConflictException(String.format("Event " + eventId + " is not of comment " + comment.getId()));
         }
     }
 
     private void checkUserComment(Comment comment, Long userId) {
-        if (comment.getAuthor().getId() != userId) {
+        if (!comment.getAuthor().getId().equals(userId)) {
             throw new ConflictException(String.format("User " + userId + " is not the owner of comment " + comment.getId()));
         }
     }
