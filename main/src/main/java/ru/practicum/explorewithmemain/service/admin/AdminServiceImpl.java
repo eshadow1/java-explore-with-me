@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithmemain.models.category.Category;
 import ru.practicum.explorewithmemain.models.comment.Comment;
-import ru.practicum.explorewithmemain.models.comment.dto.NewCommentDto;
+import ru.practicum.explorewithmemain.models.comment.dto.UpdateCommentDto;
 import ru.practicum.explorewithmemain.models.compilation.Compilation;
 import ru.practicum.explorewithmemain.models.compilation.dto.NewCompilationDto;
 import ru.practicum.explorewithmemain.models.compilation.mapper.CompilationMapper;
@@ -251,9 +251,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Comment updateComment(Long commentId, NewCommentDto commentDto) {
-        var comment = commentRepository.findById(commentId).orElseThrow(() ->
-                new NotFoundException(String.format("Comment with id " + commentId + " not found")));
+    public Comment updateComment(UpdateCommentDto commentDto) {
+        var comment = commentRepository.findById(commentDto.getId()).orElseThrow(() ->
+                new NotFoundException(String.format("Comment with id " + commentDto.getId() + " not found")));
         comment.setText(commentDto.getText());
         return commentRepository.save(comment);
     }

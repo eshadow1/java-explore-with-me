@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.explorewithmemain.models.comment.Comment;
 import ru.practicum.explorewithmemain.models.comment.dto.NewCommentDto;
+import ru.practicum.explorewithmemain.models.comment.dto.UpdateCommentDto;
 import ru.practicum.explorewithmemain.models.events.Event;
 import ru.practicum.explorewithmemain.models.events.State;
 import ru.practicum.explorewithmemain.models.events.dto.NewEventDto;
@@ -341,8 +342,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Comment updateComment(Long eventId, Long userId, Long commentId, NewCommentDto commentDto) {
-        Comment comment = getCommentById(commentId);
+    public Comment updateComment(Long eventId, Long userId, UpdateCommentDto commentDto) {
+        Comment comment = getCommentById(commentDto.getId());
 
         checkUserComment(comment, userId);
         checkEventComment(comment, eventId);

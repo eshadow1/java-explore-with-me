@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithmemain.models.comment.dto.CommentDto;
 import ru.practicum.explorewithmemain.models.comment.dto.NewCommentDto;
+import ru.practicum.explorewithmemain.models.comment.dto.UpdateCommentDto;
 import ru.practicum.explorewithmemain.models.comment.mapper.CommentMapper;
 import ru.practicum.explorewithmemain.service.user.UserService;
 
@@ -43,12 +44,11 @@ public class UserCommentController {
         return CommentMapper.toCommentDto(userService.deleteComment(userId, commentId, eventId));
     }
 
-    @PatchMapping("/{commentId}")
+    @PatchMapping
     @ResponseStatus(HttpStatus.OK)
     public CommentDto updateComment(@PathVariable Long userId,
                                     @PathVariable Long eventId,
-                                    @PathVariable Long commentId,
-                                    @RequestBody @Valid NewCommentDto commentDto) {
-        return CommentMapper.toCommentDto(userService.updateComment(eventId, userId, commentId, commentDto));
+                                    @RequestBody @Valid UpdateCommentDto commentDto) {
+        return CommentMapper.toCommentDto(userService.updateComment(eventId, userId, commentDto));
     }
 }

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithmemain.models.comment.dto.CommentDto;
-import ru.practicum.explorewithmemain.models.comment.dto.NewCommentDto;
+import ru.practicum.explorewithmemain.models.comment.dto.UpdateCommentDto;
 import ru.practicum.explorewithmemain.models.comment.mapper.CommentMapper;
 import ru.practicum.explorewithmemain.service.admin.AdminService;
 
@@ -44,10 +44,8 @@ public class AdminCommentController {
         return CommentMapper.toCommentDto(adminService.deleteComment(commentId));
     }
 
-
-    @PatchMapping("/{commentId}")
-    public CommentDto updateComment(@RequestBody @Valid NewCommentDto commentDto,
-                                    @PathVariable Long commentId) {
-        return CommentMapper.toCommentDto(adminService.updateComment(commentId, commentDto));
+    @PatchMapping
+    public CommentDto updateComment(@RequestBody @Valid UpdateCommentDto commentDto) {
+        return CommentMapper.toCommentDto(adminService.updateComment(commentDto));
     }
 }
