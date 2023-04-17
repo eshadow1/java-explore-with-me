@@ -368,7 +368,7 @@
 									"      \r",
 									"        pm.request.body.update({\r",
 									"            mode: 'raw',\r",
-									"            raw: JSON.stringify(rnd.getComment()),\r",
+									"            raw: JSON.stringify(rnd.getUpdateComment(commentOld.id)),\r",
 									"            options: { raw: { language: 'json' } }\r",
 									"        });\r",
 									"    } catch(err) {\r",
@@ -446,20 +446,13 @@
 							"raw": "{{request_body}}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/admin/comments/:id",
+							"raw": "{{baseUrl}}/admin/comments",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"admin",
-								"comments",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{commentid}}"
-								}
+								"comments"
 							]
 						}
 					},
@@ -1059,7 +1052,7 @@
 									"        pm.environment.set(\"catid\", category.id);\r",
 									"        pm.environment.set(\"eid\", event.id);\r",
 									"\r",
-									"        comment = rnd.getComment();\r",
+									"        comment = rnd.getUpdateComment(commentOld.id);\r",
 									"        \r",
 									"        pm.request.body.update({\r",
 									"            mode: 'raw',\r",
@@ -1141,7 +1134,7 @@
 							"raw": "{{request_body}}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comments/:commentId",
+							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comments",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1150,8 +1143,7 @@
 								":userId",
 								"events",
 								":eventId",
-								"comments",
-								":commentId"
+								"comments"
 							],
 							"variable": [
 								{
@@ -1161,10 +1153,6 @@
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
-								},
-								{
-									"key": "commentId",
-									"value": "{{commentid}}"
 								}
 							]
 						}
@@ -1194,7 +1182,7 @@
 									"        pm.environment.set(\"catid\", category.id);\r",
 									"        pm.environment.set(\"eid\", event.id);\r",
 									"\r",
-									"        comment = rnd.getComment();\r",
+									"        comment = rnd.getUpdateComment(commentOld.id);\r",
 									"        \r",
 									"        pm.request.body.update({\r",
 									"            mode: 'raw',\r",
@@ -1258,7 +1246,7 @@
 							"raw": "{{request_body}}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comments/:commentId",
+							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comments",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1267,8 +1255,7 @@
 								":userId",
 								"events",
 								":eventId",
-								"comments",
-								":commentId"
+								"comments"
 							],
 							"variable": [
 								{
@@ -1278,10 +1265,6 @@
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
-								},
-								{
-									"key": "commentId",
-									"value": "{{commentid}}"
 								}
 							]
 						}
@@ -1311,7 +1294,7 @@
 									"        pm.environment.set(\"catid\", category.id);\r",
 									"        pm.environment.set(\"eid\", event2.id);\r",
 									"\r",
-									"        comment = rnd.getComment();\r",
+									"        comment = rnd.getUpdateComment(commentOld.id);\r",
 									"        \r",
 									"        pm.request.body.update({\r",
 									"            mode: 'raw',\r",
@@ -1375,7 +1358,7 @@
 							"raw": "{{request_body}}"
 						},
 						"url": {
-							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comments/:commentId",
+							"raw": "{{baseUrl}}/users/:userId/events/:eventId/comments",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1384,8 +1367,7 @@
 								":userId",
 								"events",
 								":eventId",
-								"comments",
-								":commentId"
+								"comments"
 							],
 							"variable": [
 								{
@@ -1395,10 +1377,6 @@
 								{
 									"key": "eventId",
 									"value": "{{eid}}"
-								},
-								{
-									"key": "commentId",
-									"value": "{{commentid}}"
 								}
 							]
 						}
@@ -2042,6 +2020,13 @@
 					"    ",
 					"    getComment() {",
 					"        return {",
+					"            text: pm.variables.replaceIn('{{$randomLoremParagraphs}}')",
+					"        };",
+					"    }",
+					"",
+					"    getUpdateComment(userId) {",
+					"        return {",
+					"            id: userId,",
 					"            text: pm.variables.replaceIn('{{$randomLoremParagraphs}}')",
 					"        };",
 					"    }",
