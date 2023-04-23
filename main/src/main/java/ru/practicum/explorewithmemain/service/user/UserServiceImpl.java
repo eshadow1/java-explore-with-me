@@ -3,6 +3,9 @@ package ru.practicum.explorewithmemain.service.user;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.explorewithmemain.models.comment.Comment;
+import ru.practicum.explorewithmemain.models.comment.dto.NewCommentDto;
+import ru.practicum.explorewithmemain.models.comment.dto.UpdateCommentDto;
 import ru.practicum.explorewithmemain.models.events.Event;
 import ru.practicum.explorewithmemain.models.events.State;
 import ru.practicum.explorewithmemain.models.events.dto.NewEventDto;
@@ -13,6 +16,7 @@ import ru.practicum.explorewithmemain.models.request.Request;
 import ru.practicum.explorewithmemain.models.request.Status;
 import ru.practicum.explorewithmemain.models.request.mapper.RequestMapper;
 import ru.practicum.explorewithmemain.repository.category.CategoryRepository;
+import ru.practicum.explorewithmemain.repository.comment.CommentRepository;
 import ru.practicum.explorewithmemain.repository.events.EventRepository;
 import ru.practicum.explorewithmemain.repository.events.LocationRepository;
 import ru.practicum.explorewithmemain.repository.request.RequestRepository;
@@ -21,6 +25,7 @@ import ru.practicum.explorewithmemain.utils.database.FromPageRequest;
 import ru.practicum.explorewithmemain.utils.exception.ConflictException;
 import ru.practicum.explorewithmemain.utils.exception.NotFoundException;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,17 +41,20 @@ public class UserServiceImpl implements UserService {
     private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
     private final LocationRepository locationRepository;
+    private final CommentRepository commentRepository;
 
     public UserServiceImpl(UserRepository userRepository,
                            EventRepository eventRepository,
                            CategoryRepository categoryRepository,
                            RequestRepository requestRepository,
-                           LocationRepository locationRepository) {
+                           LocationRepository locationRepository,
+                           CommentRepository commentRepository) {
         this.userRepository = userRepository;
         this.eventRepository = eventRepository;
         this.categoryRepository = categoryRepository;
         this.requestRepository = requestRepository;
         this.locationRepository = locationRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -299,6 +307,82 @@ public class UserServiceImpl implements UserService {
 
         request.setStatus(Status.CANCELED);
         return requestRepository.save(request);
+    }
+
+
+    @Override
+    public Comment addComment(Long eventId, Long userId, NewCommentDto newCommentDto) {
+        var user = userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException(String.format("User " + userId + " not found")));
+        var event = eventRepository.findById(eventId).orElseThrow(() ->
+                new NotFoundException(String.format("Event " + eventId + " not found")));
+
+        if (event.getState() == State.PENDING) {
+            throw new ConflictException("You can't get comments to not published events");
+        }
+
+        return commentRepository.save(Comment.builder()
+                .id(0L)
+                .text(newCommentDto.getText())
+                .author(user)
+                .event(event)
+                .createdOn(LocalDateTime.now())
+                .build());
+    }
+
+    @Override
+    public Comment deleteComment(Long userId, Long commentId, Long eventId) {
+        Comment comment = getCommentById(commentId);
+
+        checkUserComment(comment, userId);
+
+        commentRepository.deleteById(commentId);
+
+        return comment;
+    }
+
+    @Override
+    public Comment updateComment(Long eventId, Long userId, UpdateCommentDto commentDto) {
+        Comment comment = getCommentById(commentDto.getId());
+
+        checkUserComment(comment, userId);
+        checkEventComment(comment, eventId);
+
+        LocalDateTime createdOn = comment.getCreatedOn();
+        if (Duration.between(createdOn, LocalDateTime.now()).toHours() > 24) {
+            throw new ConflictException("The comment cannot be edited as it is older than 24 hours");
+        }
+
+        comment.setText(commentDto.getText());
+        comment.setEditedOn(LocalDateTime.now());
+
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public Comment getComment(Long eventId, Long userId, Long commentId) {
+        Comment comment = getCommentById(commentId);
+
+        checkUserComment(comment, userId);
+        checkEventComment(comment, eventId);
+        return comment;
+    }
+
+    private void checkEventComment(Comment comment, Long eventId) {
+        if (!comment.getEvent().getId().equals(eventId)) {
+            throw new ConflictException(String.format("Event " + eventId + " is not of comment " + comment.getId()));
+        }
+    }
+
+    private void checkUserComment(Comment comment, Long userId) {
+        if (!comment.getAuthor().getId().equals(userId)) {
+            throw new ConflictException(String.format("User " + userId + " is not the owner of comment " + comment.getId()));
+        }
+    }
+
+    private Comment getCommentById(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(() ->
+                new NotFoundException(String.format("Comment " + commentId + " not found")));
     }
 
     private Long getCountUser(Event event) {
